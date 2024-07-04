@@ -1,0 +1,23 @@
+{
+  "name": "rete_electron_base",
+  "version": "1.0.0",
+  "description": "Integrating rete.js with electron",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pranayjoshi/rete_electron_base.git"
+  },
+  "author": "Pranay Joshi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pranayjoshi/rete_electron_base/issues"
+  },
+  "homepage": "https://github.com/pranayjoshi/rete_electron_base#readme",
+  "devDependencies": {
+    "electron": "^31.1.0"
+  }
+}
