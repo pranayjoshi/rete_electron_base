@@ -46,13 +46,21 @@
   </style>
 </head>
 <body class="relative flex items-center justify-center min-h-screen bg-gray-900">
-  <div class="flex items-center space-x-32 relative">
+  <div class="flex items-center space-x-32 relative border-2 p-8 rounded-lg">
     <div class="flex flex-col items-center">
       <input type="range" min="0" max="100" value="50" class="vertical-slider" id="slider">
     </div>
-    <div class="bg-white p-4 shadow-md rounded-md fixed-size flex items-center justify-center">
-      <span id="counter" class="text-2xl font-bold">50</span>
+    <div class="flex flex-col items-center">
+      <div class="bg-white p-4 shadow-md rounded-md fixed-size flex items-center justify-center">
+        <span id="counter" class="text-2xl font-bold">50</span>
+      </div>
+      <div class="w-full ml-12 mt-6 mb-0">
+        <p class="text-lg text-white">Brightness</p>
+        <!-- <img width="30" height="30" src="https://img.icons8.com/fluency-systems-regular/96/FFFFFF/brightness-settings.png" alt="brightness-settings"/> -->
+      </div>
+      
     </div>
+    
     <div class="bulb-container">
       <div class="bulb border-2 border-white" id="bulb"></div>
       <div class="stem border-2"></div>

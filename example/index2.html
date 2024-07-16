@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vertical Slider with Sound Control</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      .vertical-slider {
+        writing-mode: bt-lr; /* bottom to top, left to right */
+        -webkit-appearance: slider-vertical;
+        width: 24px;
+        height: 180px;
+      }
+      .speaker-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .fixed-size {
+        width: 80px;
+        height: 80px;
+      }
+      .connection {
+        position: absolute;
+        z-index: -1;
+      }
+      /* Additional styles for visual feedback */
+      .volume-level {
+        width: 100%;
+        height: 20px;
+        background-color: grey;
+        border-radius: 10px;
+        transition: background-color 0.3s, width 0.3s;
+      }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/tone@14.8.26/build/Tone.min.js"></script>
+  </head>
+  <body
+    class="relative flex items-center justify-center min-h-screen bg-gray-900"
+  >
+    <div class="flex items-center space-x-32 relative border-2 p-8 rounded-lg">
+      <div class="flex flex-col items-center">
+        <input
+          type="range"
+          min="0"
+          max="100"
+          value="50"
+          class="vertical-slider"
+          id="slider"
+        />
+      </div>
+      <div class="flex flex-col items-center">
+        <div
+          class="bg-white p-4 shadow-md rounded-md fixed-size flex items-center justify-center"
+        >
+          <span id="counter" class="text-2xl font-bold">50</span>
+        </div>
+        <div class="w-full ml-12 mt-6 mb-0">
+          <p class="text-lg text-white">Volume</p>
+        </div>
+      </div>
+
+      <div class="speaker-container">
+        <div class="volume-level bg-white" id="volumeLevel"></div>
+        <!-- Volume Label -->
+        <span id="volumeLabel" class="text-white mt-2">50%</span>
+      </div>
+    </div>
+    <svg class="connection" width="100%" height="100%">
+        <path id="path1" fill="none" stroke="white" stroke-width="2"/>
+        <path id="path2" fill="none" stroke="white" stroke-width="2"/>
+        <circle id="circle1-start" r="5" fill="none" stroke="white" stroke-width="2"/>
+        <circle id="circle1-end" r="5" fill="none" stroke="white" stroke-width="2"/>
+        <circle id="circle2-start" r="5" fill="none" stroke="white" stroke-width="2"/>
+        <circle id="circle2-end" r="5" fill="none" stroke="white" stroke-width="2"/>
+      </svg>
+
+    <script>
+      window.onload = function () {
+        const synth = new Tone.Synth().toDestination();
+        const slider = document.getElementById("slider");
+        const counter = document.getElementById("counter");
+        const volumeLevel = document.getElementById("volumeLevel");
+        const volumeLabel = document.getElementById("volumeLabel"); // Get the volume label element
+
+        slider.addEventListener("input", () => {
+          const value = slider.value;
+          counter.textContent = value;
+
+          const volumePercentage = value / 100;
+          volumeLevel.style.width = `${volumePercentage * 100}%`;
+          volumeLevel.style.backgroundColor = `rgba(255, 255, 255, ${volumePercentage})`;
+          volumeLabel.textContent = `${Math.round(volumePercentage * 100)}%`; // Update the volume label
+
+          synth.triggerAttackRelease("C4", "0.5");
+        });
+      };
+    </script>
+      <script>
+        const slider = document.getElementById('slider');
+        const counter = document.getElementById('counter');
+        const bulb = document.getElementById('volumeLevel');
+        const path1 = document.getElementById('path1');
+        const path2 = document.getElementById('path2');
+        const circle1Start = document.getElementById('circle1-start');
+        const circle1End = document.getElementById('circle1-end');
+        const circle2Start = document.getElementById('circle2-start');
+        const circle2End = document.getElementById('circle2-end');
+    
+        function updatePaths() {
+      const sliderRect = slider.getBoundingClientRect();
+      const counterRect = counter.getBoundingClientRect();
+      const bulbRect = bulb.getBoundingClientRect();
+    
+      const startX1 = sliderRect.right;
+      const startY1 = sliderRect.top + sliderRect.height / 2;
+      const endX1 = counterRect.left - 30;
+      const endY1 = counterRect.top + counterRect.height / 2;
+    
+      const startX2 = counterRect.right + 30;
+      const startY2 = counterRect.top + counterRect.height / 2;
+      const endX2 = bulbRect.left - 5;
+      const endY2 = bulbRect.top + bulbRect.height / 2;
+    
+      const control1X1 = startX1 + 50;
+      const control1Y1 = startY1 - 50; // Adjust control point
+      const control2X1 = endX1 - 50;
+      const control2Y1 = endY1 + 50; // Adjust control point
+    
+      const control1X2 = startX2 + 50;
+      const control1Y2 = startY2 + 50; // Adjust control point
+      const control2X2 = endX2 - 50;
+      const control2Y2 = endY2 - 50; // Adjust control point
+    
+      path1.setAttribute('d', `M${startX1},${startY1} C${control1X1},${control1Y1} ${control2X1},${control2Y1} ${endX1},${endY1}`);
+      path2.setAttribute('d', `M${startX2},${startY2} C${control1X2},${control1Y2} ${control2X2},${control2Y2} ${endX2},${endY2}`);
+    
+      circle1Start.setAttribute('cx', startX1);
+      circle1Start.setAttribute('cy', startY1);
+      circle1End.setAttribute('cx', endX1);
+      circle1End.setAttribute('cy', endY1);
+    
+      circle2Start.setAttribute('cx', startX2);
+      circle2Start.setAttribute('cy', startY2);
+      circle2End.setAttribute('cx', endX2);
+      circle2End.setAttribute('cy', endY2);
+    }
+    
+        slider.addEventListener('input', () => {
+          const value = slider.value;
+          counter.textContent = value;
+          const brightness = value / 100;
+          bulb.style.backgroundColor = `rgba(255, 255, 0, ${brightness})`;
+        });
+    
+        window.addEventListener('resize', updatePaths);
+        window.addEventListener('load', updatePaths);
+      </script>
+  </body>
+</html>
