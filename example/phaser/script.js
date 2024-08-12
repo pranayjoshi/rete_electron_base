@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const slider = document.getElementById('slider');
+    let rocketSpeed = 50;
     class Example extends Phaser.Scene {
         text;
         cursors;
